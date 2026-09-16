@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { DatePickerField } from "@/components/hub/date-picker-field";
+import { BottomCta } from "@/components/shell/bottom-cta";
 import {
   FormInput,
   FormRow,
@@ -60,7 +61,7 @@ export function CreateHubForm() {
   const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
       <FormSection>
         <FormRow label="Grupo">
           <FormInput
@@ -105,24 +106,28 @@ export function CreateHubForm() {
         <DatePickerField value={endDate} min={today} onChange={setEndDate} />
       </FormSection>
 
-      <div className="px-1">
-        <p className="font-mono text-lg font-medium tabular-nums text-white/90">
-          {formatCurrency(preview.finalBank)}
-        </p>
-        <p className="mt-0.5 text-[11px] text-white/30">
-          {preview.days} dias · {formatCurrency(preview.perHead)}/pessoa
-        </p>
-      </div>
-
-      <button
-        type="submit"
-        disabled={submitting}
-        className={cn(
-          "h-12 w-full rounded-xl bg-white text-[15px] font-medium text-zinc-950 transition-all hover:bg-white/90 active:scale-[0.98] disabled:opacity-40",
-        )}
+      <BottomCta
+        before={
+          <div className="px-1">
+            <p className="font-mono text-lg font-medium tabular-nums text-white/90">
+              {formatCurrency(preview.finalBank)}
+            </p>
+            <p className="mt-0.5 text-[11px] text-white/30">
+              {preview.days} dias, {formatCurrency(preview.perHead)}/pessoa
+            </p>
+          </div>
+        }
       >
-        {submitting ? "Criando…" : "Criar salinha"}
-      </button>
+        <button
+          type="submit"
+          disabled={submitting}
+          className={cn(
+            "h-12 w-full rounded-xl bg-white text-[15px] font-medium text-zinc-950 transition-all hover:bg-white/90 active:scale-[0.98] disabled:opacity-40",
+          )}
+        >
+          {submitting ? "Criando…" : "Criar salinha"}
+        </button>
+      </BottomCta>
     </form>
   );
 }
